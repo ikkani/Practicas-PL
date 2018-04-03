@@ -5,7 +5,7 @@
 #include <cstring>
 using namespace std;
 
-map <char *,int> table;
+map <string,int> table;
 int yylex(void);
 int yyerror(const char *s);
 %}
@@ -52,7 +52,7 @@ anotherCti	:	','		CTI     anotherCti
 		|
 ;
 asig    :		ID      asig_v
-		|		ID      '='   arit_expr  { table[*$1] = $3;}
+		|		ID      '='   arit_expr  { string s($1); table[s] = $3;}
 
 ;
 arit_expr	:	arit_expr 		'+' 		factor
@@ -101,7 +101,7 @@ int main() {
     cout<<"\n";
 	yyparse();
 
-	for (map<char *,int>::iterator i = table.begin(); i != table.end() ; i++){
+	for (map<string,int>::iterator i = table.begin(); i != table.end() ; i++){
 	    cout << "\nLa variable " << i -> first << " tiene el valor " << i ->second ; 
 	}
 

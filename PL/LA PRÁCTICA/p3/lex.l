@@ -14,7 +14,6 @@ CTI                 [0-9]+
 IF					"if"
 ELSE			    "else"
 INT 				"int"[ \t\n]+
-PORD				"%d"
 AND					[ \n\t]*"AND"
 OR					[ \n\t]*"OR"
 NOT					[ \n\t]*"NOT"
@@ -23,6 +22,7 @@ MIN_EQUAL			"<="
 MAY_EQUAL			">="
 NOT_EQUAL			"!="
 PRINTF				"printf"
+PORD				"%d"
 
 %option noyywrap
 
@@ -33,8 +33,8 @@ PRINTF				"printf"
 {IF}				return IF;
 {ELSE}				return ELSE;
 {PRINTF}            return PRINTF;
-{ID}      			return ID;
 {PORD}				return PORD;
+{ID}      			{yylval.str = (char*)malloc(strlen(yytext)+1); strcpy(yylval.str, yytext); return ID;}
 {CTI}  			    {yylval.num = atoi(yytext); return CTI;}
 {INT}				return INT;
 {AND}				return AND;
