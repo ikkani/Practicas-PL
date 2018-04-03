@@ -4,3 +4,6 @@ bison -d parser.y
 g++ parser.tab.c lex.yy.c -lfl -lm
 
 24 abril examen
+
+
+ruta iñaki : /mnt/c/Users/urrut/Dropbox/Universidad sincronizada/Tercer año/Segundo semestre/PL/Prácticas/PL/LA PRÁCTICA/p3

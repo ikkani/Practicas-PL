@@ -47,29 +47,18 @@ extern int yydebug;
   {
     CTI = 258,
     ID = 259,
-    OP_PR = 260,
-    CL_PR = 261,
-    OP_SR = 262,
-    CL_SR = 263,
-    OP_BR = 264,
-    CL_BR = 265,
-    IF = 266,
-    ELSE = 267,
-    INT = 268,
-    SEMICOLON = 269,
-    EQUAL = 270,
-    COMA = 271,
-    AND = 272,
-    OR = 273,
-    NOT = 274,
-    D_EQUAL = 275,
-    MIN_EQUAL = 276,
-    MAY_EQUAL = 277,
-    NOT_EQUAL = 278,
-    PLUS = 279,
-    MINUS = 280,
-    DIV = 281,
-    MULT = 282
+    IF = 260,
+    ELSE = 261,
+    INT = 262,
+    PRINTF = 263,
+    PORD = 264,
+    AND = 265,
+    OR = 266,
+    NOT = 267,
+    D_EQUAL = 268,
+    MIN_EQUAL = 269,
+    MAY_EQUAL = 270,
+    NOT_EQUAL = 271
   };
 #endif
 
@@ -83,7 +72,7 @@ union YYSTYPE
 	char * str;
 	int num;
 
-#line 87 "parser.tab.h" /* yacc.c:1909  */
+#line 76 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

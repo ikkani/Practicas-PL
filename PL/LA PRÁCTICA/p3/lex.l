@@ -14,6 +14,7 @@ CTI                 [0-9]+
 IF					"if"
 ELSE			    "else"
 INT 				"int"[ \t\n]+
+PORD				"%d"
 AND					[ \n\t]*"AND"
 OR					[ \n\t]*"OR"
 NOT					[ \n\t]*"NOT"
@@ -33,6 +34,7 @@ PRINTF				"printf"
 {ELSE}				return ELSE;
 {PRINTF}            return PRINTF;
 {ID}      			return ID;
+{PORD}				return PORD;
 {CTI}  			    {yylval.num = atoi(yytext); return CTI;}
 {INT}				return INT;
 {AND}				return AND;

@@ -14,7 +14,7 @@ int yyerror(const char *s);
 }
 
 %token <num> CTI 
-%token <str> ID IF ELSE INT PRINTF
+%token <str> ID IF ELSE INT PRINTF PORD
 %token <str> AND OR NOT D_EQUAL MIN_EQUAL MAY_EQUAL NOT_EQUAL
 
 
@@ -60,7 +60,7 @@ division	:		'-'   	division
 			|		CTI
 			|		'('	    arit_expr	')'
 ;
-print 	:		PRINTF		'('    '"'		'%' 	'd'     '"'   ','	ID   ')'
+print 	:		PRINTF		'('   '"'	PORD	'"'   ','	ID   ')'
 ;
 c_if	:		IF      '('     l_cond	  ')'		'{'		expr	'}'
 		|		IF      '('     l_cond	  ')'		'{'		expr	'}'
