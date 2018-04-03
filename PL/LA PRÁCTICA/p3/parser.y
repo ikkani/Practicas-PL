@@ -1,8 +1,11 @@
 %{
 	
 #include <iostream>
+#include <map>
+#include <cstring>
 using namespace std;
 
+map <char *,int> table;
 int yylex(void);
 int yyerror(const char *s);
 %}
@@ -16,6 +19,10 @@ int yyerror(const char *s);
 %token <num> CTI 
 %token <str> ID IF ELSE INT PRINTF PORD
 %token <str> AND OR NOT D_EQUAL MIN_EQUAL MAY_EQUAL NOT_EQUAL
+%type  <num> factor
+%type  <num> division
+%type  <num> arit_expr
+
 
 
 %%
@@ -36,8 +43,8 @@ b_type	:		type    ID
 ;
 type    :		INT
 ;
-vector  :		type    ID    '['	   CTI	  ']'
-		|	  	type    ID    '['	   CTI	  ']'   asig_v  
+vector  :		type    ID    '['	   CTI	     ']'
+		|	  	type    ID    '['	   CTI	     ']'      asig_v  
 ;
 asig_v	:		'='		'{'	CTI anotherCti '}' 
 ;
@@ -45,22 +52,22 @@ anotherCti	:	','		CTI     anotherCti
 		|
 ;
 asig    :		ID      asig_v
-		|		ID      '='   arit_expr  
+		|		ID      '='   arit_expr  { table[*$1] = $3;}
 
 ;
 arit_expr	:	arit_expr 		'+' 		factor
  			|	arit_expr 		'-'  		factor
- 			|	factor	
+ 			|	factor	{$$ = $1;}
 ;
 factor  :		factor     		'*'     	division
 		|		factor     		'/'     	division
-		|		division
+		|		division   {$$ = $1;}
 ;
-division	:		'-'   	division 
-			|		CTI
-			|		'('	    arit_expr	')'
+division	:		'-'   	division  {$$ = -$2;}
+			|		CTI     {$$ = $1;}
+			|		'('	    arit_expr 	 ')' {$$ = $2;}
 ;
-print 	:		PRINTF		'('   '"'	PORD	'"'   ','	ID   ')'
+print 	:		PRINTF		'('    '"'   PORD   '"'     ','	   ID   ')'
 ;
 c_if	:		IF      '('     l_cond	  ')'		'{'		expr	'}'
 		|		IF      '('     l_cond	  ')'		'{'		expr	'}'
@@ -74,7 +81,7 @@ c_cond	:		c_cond	comp	fact
 		|		fact
 ;
 fact	:		'('    l_cond	 ')'		
-		|		CTI
+		|		CTI    
 		|		ID				 
 ;
 logic	:		AND
@@ -94,7 +101,9 @@ int main() {
     cout<<"\n";
 	yyparse();
 
-
+	for (map<char *,int>::iterator i = table.begin(); i != table.end() ; i++){
+	    cout << "\nLa variable " << i -> first << " tiene el valor " << i ->second ; 
+	}
 
     cout<<"\n";
 	return EXIT_SUCCESS;
