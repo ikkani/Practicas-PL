@@ -1,0 +1,58 @@
+Lo suyo es dado un ejemplo crearme un arbol para saber como pasa la información por el arbol y asi saber que escribir, para el ejemplo
+del seminario 1 , el ejercicio tres. se ve que dado una entrada sale un output, tendremos que saber donde escribir el output.
+
+La grmática era la siguiente:
+ Def -> ID '(' lista ')'
+lista -> Tipo ID Resto
+      -> epsilon
+Resto -> ',' Tipo ID Resto
+      -> epsilon
+Tipo  -> INT
+      -> FLOAT
+      -> CHAR
+
+haremos el arbol del ejemplo:
+
+           Def
+
+ID         '('            list             ')'
+
+f                     tipo id    resto
+                       INT  a     ',' tipo id resto
+                                       FLOAT b  ',' tipo id resto
+                                                    CHAR  c   epsilon
+
+la c no podremos escribirla hasta que no lleguemos a c, para ello tenemos que llegar hasta el final del arbol, es decir llegamos a que resto
+es igual ese epsilon, pues hasta que no lleguemos ahi no podemos imprimirlo. Tienes que hacerlo en el pmismo orden que el output te aparece.
+
+Abrimos llave y ponemos: Resto -> epsilon { escribir("Offset de", )} 
+c no lo vemos y tenemos que traerlo aqui , que suba c y baje por resto. el sintetizado del resto va a tener la c.
+eso donde lo pondremos? se pondrá Resto -> ',' Tipo ID Resto . los sintetizados se ponen despues del simbolo no terminal.
+y es el sistentizado de la cabezera(no el que da a epsilon) y estos se ponen al final. Resto -> ',' Tipo ID Resto {Resto.s = ID.lexval;}
+ahora delante dond elo ponemos? para pasarlo para abajo? pues delante de resto.  Resto -> ',' Tipo ID {Resto1.h = Resto.s}Resto {Resto.s = ID.lexval;}
+pero es que de arriba nos vienen tambien cosas por lo tanto ese resto punto s tendria que ser h porque vamos a ir heredando de arriba:
+Resto -> ',' Tipo ID {Resto1.h = Resto.h} Resto {Resto.s = ID.lexval;} . pues ya teniendo la c continuamos donde lo dejamos arriba:
+Resto -> epsilon { escribir("Offset de",Resto.s,"= 4 ")} . No nos preocupamos de momento del syzeof y ponemos 4. Y ponemos .s porque es el systentizado de ese mismo resto.
+HAy que tener en cuenta las herencias de los restos ya que se hereda dos veces en este caso y el hijo hereda del padre pero hay diferencias uno es para el epsilon y otro para el caso general
+en los dos casos tendre que heredar ya que me viene información diferente. y esta claro que el de arriba pasa para abajo y por lo tanto tiene que haber una herencia.y en el epsilon es necesario esto:
+Resto -> epsilon { Resto.s= Resto.h; escribir("Offset de",Resto.s,"= 4 ")} y ahora si, ya que teniamos que decirle al analizador que vaya a heredar si no la información no llega bro.
+Ya hemos escrito el primer output, yuju tio. dice que lo vamos a simplificar. offset de b = 4 + sizeof(char) tal cual es una cadena todo eso.
+Donde estoy? en que resto estoy? en el de arrriba el segundo contando desde abajo. ya he pasado por mi epsilon , para imprimir c. Ahora ya estoy arriba vale? tenemos que tomarlo
+como fotos, y encerrarnos en esa foto y olvidarnos de lo demas (por asi decir) . ahora bien son instancia de una regla que son la misma, estamos en la misma regla pero ahora
+estamos arriba, son ambitos distintos. en este momento id.lexval será b, no c (el ID vale b ahora). y eso lo tenemos que tener en cuenta.
+
+Pues ya podemos escribir, pero que tipo me interesa , el de abajo que es Char y no float que es el de ese momento, y como es el de abajo, por lo tanto Resto.s sera el tipo.s para subir el char de abajo
+donde lo ponemos jajxdlol? quien es el tipo de abajo viene de resto1.s que sera tipo.s y donde lo ponemos despues del resto uno ES SINTETIZADO. por lo tanto:
+Resto -> ',' Tipo ID {Resto1.h = Resto.h} Resto {Resto.s = ID.lexval; Resto1.s = tipo.s} puedes hacerlo de diferentes maneras no todo es asi si quieres puedes irte a la isntancia de abajo 
+y donde esta el tipo pasar a la cabezara(Resto) putno ese lo que es el CHAR y cuando pasemos a la de arriba su punto s tendrá el char, lo podemos poner entonces con el uno o sin el uno poque depende de la instancia
+en la que se estuviera aun asi es lo MISMO. después en el bison da igual cracks que sois unos fieras picotuos. La gente se está adelantando y es que es normal, dicen que si estamos en la ultima instacia de resto, e intentamos
+pillar el tipo que hay de abajo no hay, pero luego lo solucionaremos tranquilidad. la cosa es que no puedo asignar dos veces Resto.s=ID.lexval; y Resto.s=tipo.s porque
+Resto.s se machacaría por eso tengo que generalizar y si lo hacemos la cosa cambiaría y los tipo me balirían y esta solucion no es la más generalq ue poner. Asique tenemos que cambiar
+y tenemos que hacer una herencia por fuerza. porque igual vale para una instancia pero no para todas. Bien nos situamos, queremos subir el CHAR. 
+Ponemos Resto1.h = Resto.h delante del resto, que estoy heredando? necesitmaos cambbiar varias cosas  podemos definir que REsto.s sea una structura y tenga dos campos
+porque tenemos que subir dos cosas sabes? pues tenemos que definir una structura donde tendremos dos campos: Resto.s.tipo , Resto.s.valor; 
+Resto -> ',' Tipo ID {Resto1.h = Resto.h} Resto {Resto.s.valor = ID.lexval; Resto.s.tipo = tipo.s /*asi tendríamos heredado el tipo de la instacia de abajo */}
+Resto -> epsilon { Resto.s= Resto.h /*no hace falta porque trae la structura */; escribir("Offset de",Resto.s.valor,"= 4 ")}
+Tambien tener en cuenta que tenemos lo del Resto.s.valor = ID.lexval para poder imprimirlo cuando sea epsilon. porque podemos hacer referencia directamente cuando estamos en esa instancia.importante esto.
+ahora bien tenemos todo para poder imprimir? si para este print, queda el ultimo. que lo dejariamos para casa.
+

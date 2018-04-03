@@ -1,0 +1,2 @@
+flex lex.l
+g++ parser.y

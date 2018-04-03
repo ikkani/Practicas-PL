@@ -1,0 +1,3 @@
+flex lexico.l
+g++ node.cpp parser.cpp lex.yy.c -lfl -lm -o main
+./main < prueba.txt

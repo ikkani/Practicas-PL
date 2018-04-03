@@ -1,0 +1,18 @@
+
+
+AST
+
+Son una forma de representación intermedia, lo que vienen siendo árboles. Hay veces que es un grafo y no un árbol, solo para facilitar el uso de
+memoria pero lo trataremos como árbol también. Pero si en vez de utilzar un grafo utilizamos un árbol funcionará también al ser el mismo concepto.
+
+Y para que sirve?   
+
+El árbol ast servirá para el control de asignaciones o chekeo de tipos por ejemplo. Realmente hay diferencia entre el árbol generado por la grámatica
+y el árbol que generamos aquí los operadores son nodos en vez de simbólos no terminales. En este se eliminan cosas que no hacen falta. Independientemente de la gramática. Aqui sin simbólos terminales  con operadores. Por que solo quiero hacer la operación. No  lo puedo utilizar para otra cosa, si la quisieramos hacer ya podríamos utilizar un AST.
+
+Y ya no hay más, veremos un ejemplo en clase, asique mira las diapositivas.
+
+Si por ejemplo tenemos:
+
+sum  : sum + fact {sum.s = sum1.s + fact.s}           -> pasaríamos a ->s             sum  : sum + fact {new NodoSuma(sum1.s,fact.s)}
+     | fact                                                                             | fact 

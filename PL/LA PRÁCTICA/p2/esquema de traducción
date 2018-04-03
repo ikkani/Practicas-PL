@@ -1,0 +1,22 @@
+
+begin	: 	expr 	';'	begin
+	| 	epsilon
+
+expr	:	ID	EQUAL	ar_expr
+	|	PRINT	ar_expr
+
+ar_expr	:	conc	ar_expr'
+
+ar_expr':	OR	conc	ar_expr
+	|	epsilon
+
+conc	:	disy	conc'
+
+conc'	:	AND	disy	conc'
+	|	epsilon
+
+disy	:	NOT	disy
+	|	ID
+	|	TRUE
+	|	FALSE
+	|	'('	ar_expr	    ')'

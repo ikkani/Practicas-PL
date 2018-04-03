@@ -1,0 +1,6 @@
+
+flex lex.l
+bison -d parser.y
+g++ parser.tab.c lex.yy.c -lfl -lm
+
+24 abril examen
